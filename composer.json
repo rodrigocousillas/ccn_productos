@@ -1,0 +1,21 @@
+{
+    "name": "urro/website",
+    "description": "Website dependencies",
+    "require": {
+        "fastly/fastly": "^6.0",
+        "intervention/image": "^3.0",
+        "phpmailer/phpmailer": "^6.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "Model\\": "models/",
+            "Controllers\\": "controllers/",
+            "MVC\\": "./"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
+    }
+}

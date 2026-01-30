@@ -1,0 +1,24 @@
+Options -MultiViews
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP:CDN-LOOP} !cloudflare
+RewriteCond %{REQUEST_URI} !^/.well-known/acme-challenge/
+RewriteCond %{HTTP_HOST} ^(www\.)?urro\.com\.ar
+RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L,QSA]
+RewriteBase /
+
+# REGLA PARA SITEMAP.XML
+RewriteRule ^sitemap\.xml$ sitemap.php [L]
+
+RewriteRule ^autor/([a-z0-9_-]+)$ /autor?slug=$1 [L,QSA]
+RewriteRule ^novedad/([a-z0-9_-]+)$ /novedad?slug=$1 [L,QSA]
+
+# Regla general para enrutar el resto de las peticiones a index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ index.php [QSA,L]
+
+<IfModule mod_headers.c>
+  <filesMatch "\.(ico|pdf|flv|jpg|jpeg|png|gif|swf|webp|svg|mp4|webm|ogg|avi|mov|wmv|mp3|aac|ogg|wav|zip|rar|woff|woff2|eot|ttf|otf|css|js)$">
+    Header set Cache-Control "max-age=31536000, public"
+  </filesMatch>
+</IfModule>
