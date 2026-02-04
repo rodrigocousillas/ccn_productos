@@ -23,9 +23,11 @@ class Router
         session_start();
         $auth = $_SESSION['login'] ?? null;
 
-        $rutasProtegidas = ['/administrador', '/novedades/admin', '/novedades/actualizar', '/novedades/crear', '/novedades/eliminar', '/autores/admin', '/autores/actualizar', '/autores/crear', '/autores/eliminar', '/notas/admin', '/notas/actualizar', '/notas/crear', '/notas/eliminar', '/comentarios/admin', '/comentarios/activo', '/comentarios/eliminar'];
+        $rutasProtegidas = ['/administrador', '/productos/admin', '/productos/actualizar', '/productos/crear', '/productos/eliminar'];
 
-        $urlActual = $_SERVER['REQUEST_URI'] === '' ? '/' : $_SERVER['REQUEST_URI'];
+        // $urlActual = $_SERVER['REQUEST_URI'] === '' ? '/' : $_SERVER['REQUEST_URI'];
+        $urlActual = str_replace('/ccn_productos/public_html', '', $_SERVER['REQUEST_URI']);
+        if ($urlActual === '') $urlActual = '/';
         $metodo = $_SERVER['REQUEST_METHOD'];
 
         $splitURL = explode('?', $urlActual);

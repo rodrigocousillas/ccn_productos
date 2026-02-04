@@ -55,7 +55,8 @@ class Admin extends ActiveRecord {
         $_SESSION['usuario'] = $this->email;
         $_SESSION['login'] = true;
 
-        header('Location: /administrador' );
+        // header('Location: /administrador' );
+        header('Location: /ccn_productos/public_html/administrador' );
 
     }
 }

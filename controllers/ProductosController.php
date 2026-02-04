@@ -2,155 +2,139 @@
 
 namespace Controllers;
 use MVC\Router;
-use Model\Novedades;
+use Model\Productos;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 
-class NovedadesController {
+class ProductosController {
 
     public static function index(Router $router) {
         
-        $novedades = Novedades::all();
+        $productos = Productos::all();
         $resultado = $_GET['resultado'] ?? null;
-        $router->renderAdmin('novedades/admin', [
-            'novedades' => $novedades,
+        $router->renderAdmin('productos/admin', [
+            'productos' => $productos,
             'resultado' => $resultado
         ]);
     }
 
     public static function crear(Router $router){
         
-        $novedades = new Novedades;
-        
-        $errores = Novedades::getErrores();
+        $producto = new Productos;
+        $errores = Productos::getErrores();
 
-        // Ejecutar el código después de que el usuario envia el formulario
         if($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-            $novedades = new Novedades($_POST['novedades']);
-
-            // --- CAMBIO 1: Cambiar la extensión a .webp para el nombre del archivo ---
-            $nombreImagen = md5( uniqid( rand(), true ) ) . ".webp"; // Aquí se cambió de .jpg a .webp
+            $producto = new Productos($_POST['producto']);
             
-            //resize a la imagen
-            if($_FILES['novedades']['tmp_name']['imagen']){
-                $manager = new ImageManager(new Driver());
-                $image = $manager->read($_FILES['novedades']['tmp_name']['imagen'])->cover(800,600);
-                $novedades->setImagen($nombreImagen); 
+            // Generar un nombre único
+            $nombreImagen = md5( uniqid( rand(), true ) ) . ".jpg"; // Agrego extensión dummy por ahora
+            $nombrePdf = md5( uniqid( rand(), true ) );
+
+            // PARCHE TEMPORAL: Subida simple sin Intervention Image (por versión PHP)
+            if($_FILES['producto']['tmp_name']['imagen']) {
+                $nombreImagen = md5( uniqid( rand(), true ) ) . ".jpg"; 
+                $producto->setImagen($nombreImagen);
+                move_uploaded_file($_FILES['producto']['tmp_name']['imagen'], CARPETA_IMAGENES . $nombreImagen);
+            }
+
+            // Subida de PDF
+            if($_FILES['producto']['tmp_name']['pdf']) {
+               // $producto->setPdf($nombrePdf . ".pdf");
+                // Mover el archivo PDF y guardar propiedad manual (o crear setPdf en modelo)
+                $producto->pdf = $nombrePdf . ".pdf";
+                move_uploaded_file($_FILES['producto']['tmp_name']['pdf'], CARPETA_PRODUCTOS_PDF . $nombrePdf . ".pdf");
+            }
+
+            $errores = $producto->validar();
+
+            if(empty($errores)) {
+                $resultado = $producto->guardar();
+                if($resultado) {
+                    header('Location: /ccn_productos/public_html/productos/admin?resultado=1');
+                    exit;
+                }
             }     
-    
-
-        $errores = $novedades->validar();
-
-        if(empty($errores)) {
-            
-            if(!is_dir(CARPETA_IMAGENES)) {
-            mkdir(CARPETA_IMAGENES);
-            }
-    
-            // --- CAMBIO 2: Guardar la imagen como WebP con calidad (opcional) ---
-            if(isset($image)){
-                $image->save(CARPETA_IMAGENES . $nombreImagen, 80); // Guarda como .webp con calidad 80
-            }
-
-            $resultado = $novedades->guardar();
-            if($resultado) {
-                header('Location: /novedades/admin?resultado=1');
-                exit;
-            }
-        }     
-
-    }
+        }
         
-        $router->renderAdmin('novedades/crear', [
-            'novedades' => $novedades,
+        $router->renderAdmin('productos/crear', [
+            'producto' => $producto,
             'errores' => $errores
         ]);
     }
 
     public static function actualizar(Router $router) {
+        $id = $_GET['id'];
+        $id = filter_var($id, FILTER_VALIDATE_INT);
 
-        $id = validarORedireccionar('/admin');
+        if(!$id) {
+            header('Location: /ccn_productos/public_html/productos/admin');
+            exit;
+        }
 
-        // Obtener los datos de la nota
-        $novedades = Novedades::find($id);
+        $producto = Productos::find($id);
+        $errores = Productos::getErrores();
 
-        // Arreglo con mensajes de errores
-        $errores = Novedades::getErrores();
-
-    
         if($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $args = $_POST['producto'];
+            $producto->sincronizar($args);
 
-            $args = $_POST['novedades'];
-        
-            $novedades->sincronizar($args);
-    
-            $errores = $novedades->validar();
+            // Validación de subida de archivos
+            $nombreImagen = md5( uniqid( rand(), true ) );
+            $nombrePdf = md5( uniqid( rand(), true ) );
+
+             // PARCHE TEMPORAL: Subida simple sin Intervention Image (por versión PHP)
+             if($_FILES['producto']['tmp_name']['imagen']) {
+                $nombreImagen = md5( uniqid( rand(), true ) ) . ".jpg";
+                $producto->setImagen($nombreImagen);
+                move_uploaded_file($_FILES['producto']['tmp_name']['imagen'], CARPETA_IMAGENES . $nombreImagen);
+            }
+
+
+            if($_FILES['producto']['tmp_name']['pdf']) {
+               // Borrar PDF previo si existe (lógica manual por ahora o agregar setPdf)
+               if($producto->pdf) {
+                   $archivoPdfPrevio = CARPETA_PRODUCTOS_PDF . $producto->pdf;
+                   if(file_exists($archivoPdfPrevio)) {
+                       unlink($archivoPdfPrevio);
+                   }
+               }
+               $producto->pdf = $nombrePdf . ".pdf";
+               move_uploaded_file($_FILES['producto']['tmp_name']['pdf'], CARPETA_PRODUCTOS_PDF . $nombrePdf . ".pdf");
+            }
+
+            $errores = $producto->validar();
             
-            
-            // --- CAMBIO 3: Cambiar la extensión a .webp para el nombre del archivo ---
-            $nombreImagen = md5( uniqid( rand(), true ) ) . ".webp"; // Aquí se cambió de .jpg a .webp
-    
-            // Verificar si hay una nueva imagen cargada
-            if($_FILES['novedades']['tmp_name']['imagen']){
-                $manager = new ImageManager(new Driver());
-                $image = $manager->read($_FILES['novedades']['tmp_name']['imagen'])->cover(800,600);
-                
-                // Si hay una imagen previa, podrías eliminarla aquí para evitar archivos huérfanos
-                // if (!empty($novedades->imagen) && file_exists(CARPETA_IMAGENES . $novedades->imagen)) {
-                //     unlink(CARPETA_IMAGENES . $novedades->imagen);
-                // }
-                $novedades->setImagen($nombreImagen); 
-            }    
-    
             if(empty($errores)) {
-
-                // Guardar la nueva imagen si se cargó una
-                if(isset($image)){ 
-                    // --- CAMBIO 4: Guardar la imagen como WebP con calidad (opcional) ---
-                    $image->save(CARPETA_IMAGENES . $nombreImagen, 80); // Guarda como .webp con calidad 80
-                }
-    
-                $resultado = $novedades->guardar();
+                $resultado = $producto->guardar();
                 if($resultado) {
-                    header('Location: /novedades/admin?resultado=2');
+                    header('Location: /ccn_productos/public_html/productos/admin?resultado=2');
                     exit;
                 }
             }
-            
         }    
 
-        $router->renderAdmin('novedades/actualizar', [
-            'novedades' => $novedades,
+        $router->renderAdmin('productos/actualizar', [
+            'producto' => $producto,
             'errores' => $errores
         ]);
-
     }
 
     public static function eliminar(){
         if($_SERVER['REQUEST_METHOD'] === 'POST') {
-
             $id = $_POST['id'];
             $id = filter_var($id, FILTER_VALIDATE_INT);
 
-
             if($id) {
-
                 $tipo = $_POST['tipo'];     
-                
-                
-                if(validarTipoContenido($tipo)) {
-                    $novedades = Novedades::find($id);
-                    $resultado = $novedades->eliminar();
+                if($tipo === 'producto') {
+                    $producto = Productos::find($id);
+                    $resultado = $producto->eliminar();
                     if($resultado) {
-                        header('Location: /novedades/admin?resultado=3');
+                        header('Location: /ccn_productos/public_html/productos/admin?resultado=3');
                         exit;
                     }
                 } 
             }
         }
     }
-
 }
-
-?>

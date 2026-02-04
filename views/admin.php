@@ -52,48 +52,18 @@
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
   <!-- Navigation-->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
-    <a class="navbar-brand" href="/administrador">URRO Obras Literarias</a>
+    <a class="navbar-brand" href="/administrador">CCN Productos</a>
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Obras literarias">
-          <a class="nav-link" href="http://www.urro.com.ar/notas/admin">
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Productos">
+          <a class="nav-link" href="/ccn_productos/public_html/productos/admin">
           <i class="fa-solid fa-newspaper"></i>
-            <span class="nav-link-text">Obras literarias</span>
+            <span class="nav-link-text">Productos</span>
           </a>
         </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Novedades">
-          <a class="nav-link" href="http://www.urro.com.ar/novedades/admin">
-          <i class="fa-solid fa-newspaper"></i>
-            <span class="nav-link-text">Novedades</span>
-          </a>
-        </li> 
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Autores">
-          <a class="nav-link" href="http://www.urro.com.ar/autores/admin">
-          <i class="fa-solid fa-newspaper"></i>
-            <span class="nav-link-text">Autores</span>
-          </a>
-        </li> 
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Mensajes">
-          <a class="nav-link" href="http://www.urro.com.ar/mensaje/admin">
-          <i class="fa-solid fa-newspaper"></i>
-            <span class="nav-link-text">Mensajes</span>
-          </a>
-        </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Comentarios">
-          <a class="nav-link" href="http://www.urro.com.ar/comentarios/admin">
-          <i class="fa-solid fa-comments"></i>
-            <span class="nav-link-text">Comentarios</span>
-          </a>
-        </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Búsquedas">
-          <a class="nav-link" href="https://www.urro.com.ar/administrador">
-          <i class="fa-solid fa-newspaper"></i>
-            <span class="nav-link-text">Búsquedas</span>
-          </a>
-        </li>  
       </ul>
       <ul class="navbar-nav sidenav-toggler">
         <li class="nav-item">

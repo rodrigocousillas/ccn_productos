@@ -2,11 +2,12 @@
 
 define('TEMPLATES_URL', __DIR__ . '/templates');
 define('FUNCIONES_URL', __DIR__ . 'funciones.php');
-define('CARPETA_IMAGENES', $_SERVER['DOCUMENT_ROOT'] . '/imagenes/');
+define('CARPETA_IMAGENES', __DIR__ . '/../public_html/imagenes/');
 define('CARPETA_SLIDERSHOME', $_SERVER['DOCUMENT_ROOT'] . '/sliderhome/');
 define('CARPETA_PRESENTACIONES', $_SERVER['DOCUMENT_ROOT'] . '/downloads/');
 define('CARPETA_PDF', $_SERVER['DOCUMENT_ROOT'] . '/pdf/');
 define('CARPETA_IMG', $_SERVER['DOCUMENT_ROOT'] . '/img/');
+define('CARPETA_PRODUCTOS_PDF', __DIR__ . '/../public_html/productos/pdf/');
 
 function incluirTemplate( string  $nombre, bool $inicio = false ) {
     include TEMPLATES_URL . "/{$nombre}.php"; 
@@ -36,7 +37,7 @@ function s($html) {
 
 // Valida tipo de petición
 function validarTipoContenido($tipo){
-    $tipos = ['empresa', 'press', 'gobiernos', 'ratio', 'mensajesContacto'];
+    $tipos = ['empresa', 'press', 'gobiernos', 'ratio', 'mensajesContacto', 'producto'];
     return in_array($tipo, $tipos);
 }
 

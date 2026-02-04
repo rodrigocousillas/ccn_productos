@@ -9,7 +9,8 @@
     </div>
 <?php endforeach; ?>
 
-<form method="POST" class="formulario" action="/login" novalidate>
+<!-- <form method="POST" class="formulario" action="/login" novalidate> -->
+<form method="POST" class="formulario" action="/ccn_productos/public_html/login" novalidate>
        
         <div class="mb-3">
             <label class="form-label" for="email">E-mail</label>

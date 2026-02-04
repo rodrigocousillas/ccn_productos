@@ -12,6 +12,7 @@ use Controllers\BusquedaController;
 use Controllers\LibrosController;
 use Controllers\MensajeController;
 use Controllers\ComentariosController;
+use Controllers\ProductosController;
 // use Controllers\UploadPdfController;
 
 
@@ -23,6 +24,13 @@ $router->post('/notas/crear', [PrensaController::class, 'crear']);
 $router->get('/notas/actualizar', [PrensaController::class, 'actualizar']);
 $router->post('/notas/actualizar', [PrensaController::class, 'actualizar']);
 $router->post('/notas/eliminar', [PrensaController::class, 'eliminar']);
+
+$router->get('/productos/admin', [ProductosController::class, 'index']);
+$router->get('/productos/crear', [ProductosController::class, 'crear']);
+$router->post('/productos/crear', [ProductosController::class, 'crear']);
+$router->get('/productos/actualizar', [ProductosController::class, 'actualizar']);
+$router->post('/productos/actualizar', [ProductosController::class, 'actualizar']);
+$router->post('/productos/eliminar', [ProductosController::class, 'eliminar']);
 
 $router->get('/novedades/admin', [NovedadesController::class, 'index']);
 $router->get('/novedades/crear', [NovedadesController::class, 'crear']);

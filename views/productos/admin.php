@@ -13,10 +13,10 @@
     <div class="card-header">
         <div class="row">
             <div class="col-md-6">
-                <h4> <i class="fa-solid fa-newspaper"></i> Listar novedades</h4>  
+                <h4> <i class="fa-solid fa-newspaper"></i> Listar productos</h4>  
             </div>
             <div class="col-md-6">
-            <a class="btn btn-success" style="float: right;" href="/novedades/crear">Agregar novedad</a>
+            <a class="btn btn-success" style="float: right;" href="/ccn_productos/public_html/productos/crear">Agregar producto</a>
             </div>
         </div>
     </div>
@@ -25,26 +25,24 @@
             <table id="example" class="table table-striped" style="width:100%; float: left;">
                 <thead>
                     <tr>
-                        <th>Fecha</th>
-                        <th>Título</th>
-                        <th>Bajada</th>
-                        <th>Visitas</th>
+                        <th>Nombre</th>
+                        <th>Linea</th>
+                        <th>Tipo de producto</th>
                         <th>Modificar</th>
                         <th>Eliminar</th>
                     </tr>
                 </thead>
             <tbody>
-            <?php foreach( $novedades as $novedad ): ?>
+            <?php foreach( $productos as $producto ): ?>
                 <tr>
-                    <td><?php echo $novedad->fecha; ?></td>
-                    <td><?php echo $novedad->titulo_novedad; ?></td>
-                    <td><?php echo $novedad->bajada_novedad; ?></td>
-                    <td><?php echo $novedad->visitas; ?></td>
-                    <td><a class="btn btn-primary" href="actualizar?id=<?php echo $novedad->id; ?>">Modificar</a></td>
+                    <td><?php echo $producto->nombre; ?></td>
+                    <td><?php echo $producto->linea; ?></td>
+                    <td><?php echo $producto->tipo_de_producto; ?></td>
+                    <td><a class="btn btn-primary" href="/ccn_productos/public_html/productos/actualizar?id=<?php echo $producto->id; ?>">Modificar</a></td>
                     <td>
-                        <form method="POST" class="w-100" action="eliminar">
-                            <input type="hidden" name="id" value="<?php echo $novedad->id; ?>">
-                            <input type="hidden" name="tipo" value="novedad">
+                        <form method="POST" class="w-100" action="/ccn_productos/public_html/productos/eliminar">
+                            <input type="hidden" name="id" value="<?php echo $producto->id; ?>">
+                            <input type="hidden" name="tipo" value="producto">
                             <input type="submit" class="btn btn-danger" value="Eliminar">
                         </form>
                     </td>

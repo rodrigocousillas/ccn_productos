@@ -7,6 +7,7 @@ class ActiveRecord {
     protected static $db;
     protected static $columnasDB = [];
     protected static $tabla = '';
+    protected static $primaryKey = 'id';
 
     protected static $errores = [];
 
@@ -15,7 +16,7 @@ class ActiveRecord {
     }
 
     public function guardar(){
-        if(!is_null($this->id)){
+        if(!is_null($this->{static::$primaryKey})){
             return $this->actualizar();
         } else {
             return $this->crear();
@@ -57,7 +58,7 @@ class ActiveRecord {
         
         $query = "UPDATE " . static::$tabla ." SET ";
         $query .= join(', ', $valores );
-        $query .= "WHERE id = '" . self::$db->escape_string($this->id) . "' ";
+        $query .= "WHERE " . static::$primaryKey . " = '" . self::$db->escape_string($this->{static::$primaryKey}) . "' ";
         $query .= " LIMIT 1 ";
        
         $resultado = self::$db->query($query);
@@ -70,7 +71,7 @@ class ActiveRecord {
 }
 
     public function eliminar(){
-        $query = "DELETE FROM " . static::$tabla . " WHERE id = " . self::$db->escape_string($this->id) . " LIMIT 1";
+        $query = "DELETE FROM " . static::$tabla . " WHERE " . static::$primaryKey . " = " . self::$db->escape_string($this->{static::$primaryKey}) . " LIMIT 1";
         $resultado = self::$db->query($query);
         
         if($resultado) {
@@ -84,7 +85,7 @@ class ActiveRecord {
     public function atributos() {
         $atributos = [];
         foreach(static::$columnasDB as $columna) {
-            if($columna === 'id') continue;
+            if($columna === static::$primaryKey) continue;
             $atributos[$columna] = $this->$columna;
         }
        
@@ -297,14 +298,14 @@ class ActiveRecord {
 
     //Obtiene determinado numero de registros
     public static function get($cantidad) {
-        $query = "SELECT * from " . static::$tabla . " ORDER BY id DESC LIMIT " . $cantidad ;
+        $query = "SELECT * from " . static::$tabla . " ORDER BY " . static::$primaryKey . " DESC LIMIT " . $cantidad ;
         $resultado = self::consultarSQL($query);
         return $resultado;
     }
 
     //Obtiene determinado numero de registros habilitados
     public static function getHabilitados($cantidad) {
-        $query = "SELECT * from " . static::$tabla . " WHERE habilitado = 1 ORDER BY id DESC LIMIT " . $cantidad;
+        $query = "SELECT * from " . static::$tabla . " WHERE habilitado = 1 ORDER BY " . static::$primaryKey . " DESC LIMIT " . $cantidad;
         $resultado = self::consultarSQL($query);
         return $resultado;
     }
@@ -340,7 +341,7 @@ class ActiveRecord {
 
     //Busca un registro por su id
     public static function find($id) {
-        $query = "SELECT * FROM " . static::$tabla . " WHERE id = {$id}";
+        $query = "SELECT * FROM " . static::$tabla . " WHERE " . static::$primaryKey . " = {$id}";
         $resultado = self::consultarSQL($query);
         return array_shift($resultado);
 

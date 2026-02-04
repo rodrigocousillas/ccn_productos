@@ -37,7 +37,8 @@ class LoginController {
     public static function logout(){
         session_start();
         $_SESSION = [];
-        header('Location: /login');
+        // header('Location: /login');
+        header('Location: /ccn_productos/public_html/login');
     }
     
 }

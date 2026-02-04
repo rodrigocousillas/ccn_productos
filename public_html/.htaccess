@@ -1,14 +1,14 @@
 Options -MultiViews
 RewriteEngine On
-RewriteCond %{HTTPS} off
-RewriteCond %{HTTP:CDN-LOOP} !cloudflare
-RewriteCond %{REQUEST_URI} !^/.well-known/acme-challenge/
-RewriteCond %{HTTP_HOST} ^(www\.)?urro\.com\.ar
-RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L,QSA]
-RewriteBase /
+# RewriteCond %{HTTPS} off
+# RewriteCond %{HTTP:CDN-LOOP} !cloudflare
+# RewriteCond %{REQUEST_URI} !^/.well-known/acme-challenge/
+# RewriteCond %{HTTP_HOST} ^(www\.)?urro\.com\.ar
+# RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L,QSA]
+RewriteBase /ccn_productos/public_html/
 
 # REGLA PARA SITEMAP.XML
-RewriteRule ^sitemap\.xml$ sitemap.php [L]
+# RewriteRule ^sitemap\.xml$ sitemap.php [L]
 
 RewriteRule ^autor/([a-z0-9_-]+)$ /autor?slug=$1 [L,QSA]
 RewriteRule ^novedad/([a-z0-9_-]+)$ /novedad?slug=$1 [L,QSA]
@@ -28,5 +28,5 @@ RewriteRule ^ index.php [QSA,L]
 </IfModule>
 
 RewriteEngine On
-RewriteCond %{HTTPS} off
-RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+# RewriteCond %{HTTPS} off
+# RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
