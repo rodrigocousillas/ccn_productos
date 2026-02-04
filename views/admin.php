@@ -64,6 +64,18 @@
             <span class="nav-link-text">Productos</span>
           </a>
         </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Pastinas">
+          <a class="nav-link" href="/ccn_productos/public_html/pastinas/admin">
+          <i class="fa-solid fa-layer-group"></i>
+            <span class="nav-link-text">Pastinas</span>
+          </a>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Líneas">
+          <a class="nav-link" href="/ccn_productos/public_html/lineas/admin">
+          <i class="fa-solid fa-list"></i>
+            <span class="nav-link-text">Líneas</span>
+          </a>
+        </li>
       </ul>
       <ul class="navbar-nav sidenav-toggler">
         <li class="nav-item">

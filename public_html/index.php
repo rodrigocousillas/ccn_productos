@@ -13,6 +13,8 @@ use Controllers\LibrosController;
 use Controllers\MensajeController;
 use Controllers\ComentariosController;
 use Controllers\ProductosController;
+use Controllers\PastinaController;
+use Controllers\LineaController;
 // use Controllers\UploadPdfController;
 
 
@@ -31,6 +33,20 @@ $router->post('/productos/crear', [ProductosController::class, 'crear']);
 $router->get('/productos/actualizar', [ProductosController::class, 'actualizar']);
 $router->post('/productos/actualizar', [ProductosController::class, 'actualizar']);
 $router->post('/productos/eliminar', [ProductosController::class, 'eliminar']);
+
+$router->get('/pastinas/admin', [PastinaController::class, 'index']);
+$router->get('/pastinas/crear', [PastinaController::class, 'crear']);
+$router->post('/pastinas/crear', [PastinaController::class, 'crear']);
+$router->get('/pastinas/actualizar', [PastinaController::class, 'actualizar']);
+$router->post('/pastinas/actualizar', [PastinaController::class, 'actualizar']);
+$router->post('/pastinas/eliminar', [PastinaController::class, 'eliminar']);
+
+$router->get('/lineas/admin', [LineaController::class, 'index']);
+$router->get('/lineas/crear', [LineaController::class, 'crear']);
+$router->post('/lineas/crear', [LineaController::class, 'crear']);
+$router->get('/lineas/actualizar', [LineaController::class, 'actualizar']);
+$router->post('/lineas/actualizar', [LineaController::class, 'actualizar']);
+$router->post('/lineas/eliminar', [LineaController::class, 'eliminar']);
 
 $router->get('/novedades/admin', [NovedadesController::class, 'index']);
 $router->get('/novedades/crear', [NovedadesController::class, 'crear']);

@@ -3,6 +3,8 @@
 namespace Controllers;
 use MVC\Router;
 use Model\Productos;
+use Model\Pastina;
+use Model\Linea;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 
@@ -22,6 +24,8 @@ class ProductosController {
         
         $producto = new Productos;
         $errores = Productos::getErrores();
+        $pastinas = Pastina::all();
+        $lineas = Linea::all();
 
         if($_SERVER['REQUEST_METHOD'] === 'POST') {
             $producto = new Productos($_POST['producto']);
@@ -58,7 +62,9 @@ class ProductosController {
         
         $router->renderAdmin('productos/crear', [
             'producto' => $producto,
-            'errores' => $errores
+            'errores' => $errores,
+            'pastinas' => $pastinas,
+            'lineas' => $lineas
         ]);
     }
 
@@ -73,6 +79,8 @@ class ProductosController {
 
         $producto = Productos::find($id);
         $errores = Productos::getErrores();
+        $pastinas = Pastina::all();
+        $lineas = Linea::all();
 
         if($_SERVER['REQUEST_METHOD'] === 'POST') {
             $args = $_POST['producto'];
@@ -115,7 +123,9 @@ class ProductosController {
 
         $router->renderAdmin('productos/actualizar', [
             'producto' => $producto,
-            'errores' => $errores
+            'errores' => $errores,
+            'pastinas' => $pastinas,
+            'lineas' => $lineas
         ]);
     }
 

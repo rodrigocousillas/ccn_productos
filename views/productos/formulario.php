@@ -15,7 +15,14 @@
         </div>
         <div class="col-md-6 mb-3">
             <label for="linea" class="form-label">Línea</label>
-            <input type="text" class="form-control" id="linea" name="producto[linea]" value="<?php echo s($producto->linea); ?>">
+            <select class="form-control" id="linea" name="producto[linea]">
+                <option value="">-- Seleccione una línea --</option>
+                <?php foreach($lineas as $linea): ?>
+                    <option value="<?php echo s($linea->nombre); ?>" <?php echo $producto->linea === $linea->nombre ? 'selected' : ''; ?>>
+                        <?php echo s($linea->nombre); ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
         </div>
         <div class="col-md-4 mb-3">
             <label for="tipo_de_producto" class="form-label">Tipo de Producto</label>
@@ -230,8 +237,34 @@
             <textarea class="form-control" id="como_se_limpia" name="producto[como_se_limpia]" rows="3"><?php echo s($producto->como_se_limpia); ?></textarea>
         </div>
         <div class="col-md-6 mb-3">
-            <label for="color_pastina" class="form-label">color pastina</label>
-            <input type="text" class="form-control" id="color_pastina" name="producto[color_pastina]" value="<?php echo s($producto->color_pastina); ?>">
+            <label for="color_pastina" class="form-label">Color pastina (Seleccionar Color CCN)</label>
+            <div class="input-group">
+                <select class="form-control" id="color_pastina" name="producto[color_pastina]" onchange="updateProductColorPreview(this)">
+                    <option value="" data-color="#FFFFFF">-- Seleccione un color --</option>
+                    <?php foreach($pastinas as $pastina): ?>
+                        <option value="<?php echo s($pastina->color_ccn); ?>" 
+                                data-color="#<?php echo s($pastina->color_pantone); ?>" 
+                                style="background-color: #<?php echo s($pastina->color_pantone); ?>;"
+                                <?php echo $producto->color_pastina === $pastina->color_ccn ? 'selected' : ''; ?>>
+                            <?php echo s($pastina->color_ccn); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+                <span class="input-group-text p-1">
+                    <div id="product_color_preview" style="width: 40px; height: 100%; border: 1px solid #ccc; background-color: #FFFFFF;"></div>
+                </span>
+            </div>
+            <script>
+                function updateProductColorPreview(select) {
+                    var selectedOption = select.options[select.selectedIndex];
+                    var color = selectedOption.getAttribute('data-color') || '#FFFFFF';
+                    document.getElementById('product_color_preview').style.backgroundColor = color;
+                }
+                // Initialize on load
+                document.addEventListener("DOMContentLoaded", function() {
+                    updateProductColorPreview(document.getElementById('color_pastina'));
+                });
+            </script>
         </div>
         <div class="col-md-6 mb-3">
             <label for="como_se_corta" class="form-label">Como se corta</label>
